@@ -3,7 +3,7 @@
 const express = require("express");
 
 const routes = require("./routes");
-const { useIn } = require("./routing/build");
+const { useIn } = require("./routing/build.js");
 const { createJsonRouter } = require("./routing/setup");
 
 const Application = () => {

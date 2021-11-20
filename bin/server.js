@@ -6,7 +6,7 @@ const { V1 } = require("../src/utils/constantes");
 const Application = require("../src/index");
 const server = Application();
 
-const port = process.env.PORT || 5911;
+const port = process.env.PORT || 5910;
 
 server.listen(port, () => {
   console.log(`server start in http://localhost:${port}${V1}`);
