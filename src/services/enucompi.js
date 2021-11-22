@@ -1,7 +1,10 @@
 /** @format */
 
 const { EVENTS, PARAMETERS, ROUTES } = require("../utils/constantes");
-const { buildEvent } = require("../utils/intents");
+const {
+  buildEvent,
+  extractParameterOutputContext,
+} = require("../utils/intents");
 const { apiEnucompi } = require("./apis");
 const {
   buildTemplate,
@@ -9,11 +12,7 @@ const {
 } = require("../utils/enucompi/format-response");
 
 const getSechedules = async (req, res) => {
-  const params = req.body.queryResult.parameters;
-
-  // const responSechedules = Object.values(params);
-
-  const { data } = await apiEnucompi.get(`${ROUTES.BASE}`);
+  const { data } = await apiEnucompi.get(`${ROUTES.BASE_SCHEDULES}`);
 
   const resultSechedules = buildTemplate(data);
 
@@ -23,9 +22,47 @@ const getSechedules = async (req, res) => {
     [PARAMETERS.HORARIOS]: formarToDialogflow,
   };
 
-  console.log(paramtrs);
-
   return buildEvent(EVENTS.HORARIOS, paramtrs);
 };
 
-module.exports = { getSechedules };
+const postAppointment = async (req, res) => {
+  const cfpPatiente = extractParameterOutputContext(req.body, PARAMETERS.CPF);
+  const namePatiente = extractParameterOutputContext(
+    req.body,
+    PARAMETERS.NOME_PACIENTE
+  );
+
+  const id_hour = extractParameterOutputContext(
+    req.body,
+    PARAMETERS.CODIGO_HORARIO
+  );
+
+  const { data } = await apiEnucompi.get(
+    `${ROUTES.BASE_SCHEDULES_ID}${id_hour}`
+  );
+
+  const paramsContext = data.reduce((acc, cur) => Object.assign(acc, cur));
+  const { code, date, hour, doctor } = paramsContext;
+  const infoPatiente = {
+    data: {
+      id_hour: code,
+      cpf: cfpPatiente,
+      patiente: namePatiente,
+      doctor: doctor,
+      date: date,
+      hour: hour,
+    },
+  };
+
+  await apiEnucompi.post(`${ROUTES.BASE_APPOINTMENT}`, infoPatiente);
+
+  const paramtrs = {
+    [PARAMETERS.MEDICO_REPSONSAVEL]: doctor,
+    [PARAMETERS.DATA_AGENDAMENTO]: date,
+    [PARAMETERS.HORARIO_AGENDAMENTO]: hour,
+  };
+
+  return buildEvent(EVENTS.AGENDADO, paramtrs);
+};
+
+module.exports = { getSechedules, postAppointment };
