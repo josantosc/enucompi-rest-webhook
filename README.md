@@ -26,6 +26,7 @@ Unpacking objects: 100% (10/10), done.```
 3. Executar `yarn`
 4. Criar arquivo `.env`
 
+
 ```
 URL_HOSPITAL_ENUCOMPI=<URLGoogleSheet>
 PORT=<ServicePort>
@@ -33,6 +34,6 @@ BASE_SCHEDULES=<PathSchedules>
 BASE_SCHEDULES_ID=<PathSchedulesID>
 BASE_APPOINTMENT=<PathSchedulesAppointment>
 USER=<UserAPI>
-PASSWD = "PasswordApi"
+PASSWD = "PasswordApi"```
 
-5. Executar `yarn start:<NODE_ENV>`<br><br>```
+5. Executar `yarn start:<NODE_ENV>`<br><br>
