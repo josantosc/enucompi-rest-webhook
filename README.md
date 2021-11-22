@@ -43,3 +43,7 @@ PASSWD = "PasswordApi"
 ```
 
 5. Executar `yarn start:<NODE_ENV>`<br><br>
+
+
+## Autor
+[Joeckson Corrêa](https://www.linkedin.com/in/joeckson/)  <br><br>[![https://img.shields.io/badge/-Linkedin-blue](https://img.shields.io/badge/-Linkedin-blue)](https://www.linkedin.com/in/joeckson/)
